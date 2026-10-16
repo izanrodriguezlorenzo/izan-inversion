@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Izan Rodríguez · Cartera de inversión</title>
+<meta name="description" content="Cartera personal de acciones de Izan Rodríguez: rentabilidad medida con TIR y comparada con el S&P 500 y el Nasdaq 100. Solo porcentajes.">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="src/styles/tokens.css">
+<link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#inicio"><span class="brand__name">Izan Rodríguez</span><span class="brand__sub">Inversión</span></a>
+    <nav aria-label="Principal">
+      <a href="#rentabilidad">Rentabilidad</a>
+      <a href="#caidas">Caídas</a>
+      <a href="#metodologia">Metodología</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+  <section class="hero wrap" id="inicio">
+    <div class="hero__text">
+      <p class="eyebrow">Cartera personal · datos a <span data-corte>…</span></p>
+      <h1>Mi cartera, medida frente al S&amp;P&nbsp;500 y el Nasdaq&nbsp;100.</h1>
+      <p class="lead">Invierto desde 2022. La cartera se mide con rigor desde 2025, cuando el capital es mayor. Publico solo porcentajes y explico cómo los calculo.</p>
+    </div>
+    <dl class="kpis" aria-label="Rentabilidad de la cartera">
+      <div class="kpi" data-kpi="tir_desde_inicio_anualizada">
+        <dt>TIR desde el inicio, anualizada</dt>
+        <dd class="kpi__main" data-v="cartera"></dd>
+        <dd class="kpi__cmp"><span>S&amp;P 500 <b data-v="sp500"></b></span><span>Nasdaq 100 <b data-v="nasdaq100"></b></span></dd>
+        <dd class="kpi__note">Índices anualizados desde el 1 de enero de 2022.</dd>
+      </div>
+      <div class="kpi" data-kpi="tir_ytd">
+        <dt>TIR del año en curso, sin anualizar</dt>
+        <dd class="kpi__main" data-v="cartera"></dd>
+        <dd class="kpi__cmp"><span>S&amp;P 500 <b data-v="sp500"></b></span><span>Nasdaq 100 <b data-v="nasdaq100"></b></span></dd>
+      </div>
+      <div class="kpi" data-kpi="tir_ultimo_anio">
+        <dt>TIR de los últimos 12 meses</dt>
+        <dd class="kpi__main" data-v="cartera"></dd>
+        <dd class="kpi__cmp"><span>S&amp;P 500 <b data-v="sp500"></b></span><span>Nasdaq 100 <b data-v="nasdaq100"></b></span></dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="block wrap" id="rentabilidad">
+    <header class="block__head">
+      <h2>1.000 € el 8 de febrero de 2022</h2>
+      <p>Lo que valdrían hoy 1.000 € invertidos en la cartera, en el S&amp;P 500 y en el Nasdaq 100 desde el día de mi primera compra. La línea de la cartera es el TWR acumulado (no se ve alterado por cuándo entra el dinero) y va neta de comisiones; los índices son Total Return en euros, sin costes.</p>
+    </header>
+    <ul class="legend" id="legend-line">
+      <li class="legend__item" data-s="p"><span class="dot dot--cartera"></span><span class="legend__name">Cartera</span><strong class="legend__val" data-count>—</strong><span class="legend__pct" data-pct></span></li>
+      <li class="legend__item" data-s="s"><span class="dot dot--sp"></span><span class="legend__name">S&amp;P 500</span><strong class="legend__val" data-count>—</strong><span class="legend__pct" data-pct></span></li>
+      <li class="legend__item" data-s="n"><span class="dot dot--nd"></span><span class="legend__name">Nasdaq 100</span><strong class="legend__val" data-count>—</strong><span class="legend__pct" data-pct></span></li>
+    </ul>
+    <div class="chart chart--line" id="chart-line" role="img" aria-label="Evolución de 1.000 € invertidos el 8 de febrero de 2022 en la cartera, el S&P 500 y el Nasdaq 100"></div>
+    <p class="hint">Pasa el cursor o el dedo por el gráfico para ver los valores de cada día.</p>
+
+    <details class="table-view">
+      <summary>Ver rentabilidad por año en tabla</summary>
+      <div class="table-scroll">
+        <table id="tabla-anual">
+          <thead><tr><th>Año</th><th>TIR cartera</th><th>TWR cartera</th><th>S&amp;P 500</th><th>Nasdaq 100</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note">Índices medidos desde el 1 de enero de cada año. El año en curso no está anualizado.</p>
+    </details>
+  </section>
+
+  <section class="block wrap" id="caidas">
+    <header class="block__head">
+      <h2>Cuánto ha caído la cartera desde su máximo</h2>
+      <p>Distancia en porcentaje entre cada semana y el máximo anterior de la cartera. La rentabilidad de la cartera en este gráfico es el TWR, que no se ve alterado por cuándo entra el dinero.</p>
+    </header>
+    <dl class="dd-stats" id="dd-stats"></dl>
+    <div class="chart chart--dd" id="chart-dd" role="img" aria-label="Caída de la cartera respecto a su máximo anterior, por semanas"></div>
+  </section>
+
+  <section class="block wrap" id="metodologia">
+    <header class="block__head"><h2>Cómo se calcula</h2></header>
+    <ul class="method">
+      <li><b>TIR (XIRR)</b> es la métrica principal: mide el rendimiento real de mi dinero teniendo en cuenta cuándo lo aporto. El <b>TWR</b> es complementario: mide la estrategia sin el efecto del momento de las aportaciones y se usa para riesgo y para comparar con los índices.</li>
+      <li>La cartera es neta de comisiones de operación y de custodia. Los índices son S&amp;P 500 y Nasdaq 100 en versión Total Return en euros, sin costes.</li>
+      <li>Los periodos de menos de un año no se anualizan; el año en curso se muestra tal como va.</li>
+      <li>Los índices se miden desde el 1 de enero de cada periodo. La única excepción es el gráfico de 1.000 €, que parte del día de mi primera compra.</li>
+      <li>El gráfico de 1.000 € usa el TWR porque la TIR es una cifra de periodo y no puede dibujarse día a día; por eso la línea de la cartera y la TIR de arriba no coinciden. La web muestra solo porcentajes. No publico patrimonio, número de acciones ni importes por posición.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Esto no es asesoramiento financiero. Son opiniones personales. Las rentabilidades pasadas no garantizan resultados futuros. Mis posiciones pueden cambiar y los datos pueden tener retraso.</p>
+  </div>
+</footer>
+
+<script src="assets/vendor/echarts.common.min.js"></script>
+<script src="src/js/main.js"></script>
+</body>
+</html>

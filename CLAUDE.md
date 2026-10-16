@@ -11,7 +11,7 @@ Web personal de inversión: track record, métricas, tesis y watchlist. Reposito
 
 ## Privacidad (regla absoluta)
 - La web solo muestra porcentajes. Nunca patrimonio, número de acciones, cost basis ni valores en euros por posición.
-- La única cifra en euros permitida es la frase del gráfico grande: "1.000 € el 8 de febrero de 2022".
+- La única cifra en euros permitida es la frase del gráfico grande: "1.000 € el 8 de febrero de 2022". Los valores que esa línea alcanza (hipotéticos, partiendo de 1.000 €) se generan en pantalla desde el JSON; no se escriben en el código.
 - Prohibido en el repo: xlsx, xls, csv, pdf, xml, extractos, capturas con datos reales.
 - Antes de cada commit: `python3 scripts/check_privacy.py` (debe imprimir "PRIVACIDAD OK").
 - Las tesis se muestran solo para leer, sin descarga.
@@ -44,7 +44,9 @@ No es asesoramiento financiero; opiniones personales; rentabilidades pasadas no 
 ## Estructura
 - `data/web-data.json`: porcentajes de la cartera.
 - `assets/logos/`: logos de las empresas.
+- `index.html`, `src/styles/main.css`, `src/js/main.js`: página de Inicio (sin build; se abre con un servidor estático, por ejemplo `python3 -m http.server`).
 - `src/styles/tokens.css`: variables de diseño.
+- `assets/vendor/`: ECharts 5 (build común, Apache 2.0). No se carga desde CDN.
 - `scripts/check_privacy.py`: comprobación de privacidad.
 - `.claude/skills/`: skills de diseño.
 

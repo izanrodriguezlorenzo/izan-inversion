@@ -15,7 +15,7 @@ import json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {".git", "node_modules", "dist", ".claude"}
+SKIP_DIRS = {".git", "node_modules", "dist", ".claude", "vendor"}
 # Este script y las reglas del proyecto nombran lo prohibido para poder prohibirlo.
 SKIP_TEXT = {"scripts/check_privacy.py", "CLAUDE.md"}
 TEXT_EXT = {".html", ".js", ".mjs", ".css", ".json", ".md", ".txt", ".svg", ".yml", ".yaml"}
