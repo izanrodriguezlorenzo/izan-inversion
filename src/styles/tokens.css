@@ -1,0 +1,52 @@
+/* Variables de diseño. Fuente única: las muestras NO son definitivas,
+   así que todo color, tipografía y medida se cambia solo aquí. */
+:root {
+  /* Superficies (fintech oscuro) */
+  --bg: #0A0C0F;
+  --surface: #11141A;
+  --surface-2: #161A21;
+  --line: #1C2128;
+  --line-strong: #3A424D;
+
+  /* Texto */
+  --text: #E6E8EB;
+  --text-2: #9AA4B2;
+  --text-3: #8A93A0;
+
+  /* Acento único y estados */
+  --accent: #34D3B5;
+  --positive: #34D3B5;
+  --negative: #F4506E;
+
+  /* Series de los gráficos (color fijo por entidad, no por ranking) */
+  --serie-cartera: #34D3B5;
+  --serie-sp500: #8B7CF6;
+  --serie-nasdaq100: #9AA4B2;
+
+  /* Empresas de la composición */
+  --emp-meta: #1877F2;
+  --emp-amazon: #FF9900;
+  --emp-alphabet: #EA4335;
+  --emp-microsoft: #2EA043;
+  --emp-digi: #0B2A6F;
+  --emp-efectivo: #4B5563;
+
+  /* Tipografía (provisional, hasta elegir) */
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Espaciado (base 4 px) y bordes */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+  --radius: 12px;
+
+  /* Movimiento (emil-design-eng) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 0ms; }
+}

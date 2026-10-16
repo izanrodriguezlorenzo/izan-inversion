@@ -1,0 +1,11 @@
+# Nunca debe entrar aquí información privada
+datos/
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.xml
+.env
+node_modules/
+dist/
+.DS_Store
