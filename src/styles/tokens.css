@@ -20,8 +20,8 @@
 
   /* Series de los gráficos (color fijo por entidad, no por ranking) */
   --serie-cartera: #34D3B5;
-  --serie-sp500: #8B7CF6;
-  --serie-nasdaq100: #9AA4B2;
+  --serie-sp500: #6B7380;
+  --serie-nasdaq100: #C9CED6;
 
   /* Empresas de la composición */
   --emp-meta: #1877F2;

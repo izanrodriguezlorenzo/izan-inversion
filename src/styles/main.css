@@ -54,13 +54,14 @@ a{color:inherit;text-decoration:none}
 .hint{margin-top:10px;font-size:12px;color:var(--text-3)}
 
 /* Pestañas con relleno que se desliza */
-.tabs{position:relative;display:grid;width:100%;max-width:520px;grid-template-columns:repeat(4,1fr);border:1px solid var(--line-strong);border-radius:999px;height:44px;align-items:center;margin-top:40px;max-width:100%}
+.tabs{position:relative;display:grid;width:100%;max-width:640px;grid-template-columns:repeat(5,1fr);border:1px solid var(--line-strong);border-radius:999px;height:44px;align-items:center;margin-top:40px;max-width:100%}
 .tab{background:none;border:0;color:var(--text-2);font:inherit;font-size:15px;padding:0 4px;cursor:pointer;height:42px;border-radius:999px}
 .tabs__fill{position:absolute;inset:0;pointer-events:none;background:var(--accent);border-radius:999px;transition:clip-path 260ms var(--ease-in-out)}
 .tabs__fill span{display:grid;height:100%}
 .tabs__fill i{font-style:normal;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:#07130F}
 .tabs-wrap{padding-bottom:4px}
-@media (max-width:520px){.tab,.tabs__fill i{font-size:13px}}
+@media (max-width:520px){.tab,.tabs__fill i{font-size:11px;white-space:nowrap}}
+.tab,.tabs__fill i{white-space:nowrap}
 .figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;margin-top:48px;max-width:640px}
 .figs__k{font-size:14px;color:var(--text-2)}
 .figs__v{font-size:44px;font-weight:500;color:var(--accent);margin-top:8px;line-height:1.1}
@@ -84,11 +85,15 @@ a{color:inherit;text-decoration:none}
 
 /* Caídas */
 .ddrows{max-width:860px;margin-top:40px}
-.ddrow{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:baseline;padding:18px 0;border-top:1px solid var(--line)}
+.ddrow{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;align-items:baseline;padding:18px 0;border-top:1px solid var(--line)}
 .ddrow:last-child{border-bottom:1px solid var(--line)}
+.ddrow--h{font-size:13px;color:var(--text-3);padding:0 0 12px;border-top:0}
+.ddrow--h div:nth-child(n+2){text-align:right}
 .ddrow__t{font-size:17px}
-.ddrow__w{font-size:14px;color:var(--text-3);margin-left:12px}
-.ddrow__d{font-size:20px;color:var(--negative)}
+.ddrow__n{font-size:16px;text-align:right;color:var(--text)}
+.ddrow__open{color:var(--negative)}
+.ddrow__d{font-size:20px;color:var(--negative);text-align:right}
+@media (max-width:640px){.ddrow{grid-template-columns:1.2fr 1fr 1fr 1fr;gap:8px}.ddrow__t{font-size:14px}.ddrow__n{font-size:13px}.ddrow__d{font-size:15px}.ddrow--h{font-size:11px}}
 
 /* Composición */
 .donut{margin-top:32px;max-width:900px}
@@ -106,18 +111,29 @@ a{color:inherit;text-decoration:none}
 .go.nomo .sl,.go.nomo .lb{animation:none}
 
 /* Mapa de calor mensual */
-.heat-scroll{overflow-x:auto;margin-top:48px}
+.heat-read{display:flex;align-items:baseline;gap:16px;margin-top:40px;min-height:44px;font-size:15px;color:var(--text-2)}
+.heat__rv{font-size:28px;font-weight:500}
+.heat__rv.pos{color:var(--accent)}.heat__rv.neg{color:var(--negative)}
+.heat-scroll{overflow-x:auto;margin-top:12px;padding:6px}
 .heat{min-width:760px}
-.heat__row{display:grid;grid-template-columns:56px repeat(12,minmax(0,1fr)) 72px;gap:4px;margin-bottom:4px}
-.heat__head{margin-bottom:6px;font-size:11px;color:var(--text-3);text-align:center}
+.heat__row{display:grid;grid-template-columns:56px repeat(12,minmax(0,1fr)) 76px;gap:6px;margin-bottom:6px;transition:opacity 200ms var(--ease-out)}
+.heat__row.dim{opacity:.45}
+.heat__head{margin-bottom:8px;font-size:11px;color:var(--text-3);text-align:center}
 .heat__y{font-size:12px;color:var(--text-2);align-self:center}
-.hc{display:flex;align-items:center;justify-content:center;height:40px;border-radius:6px;font-size:11px;color:var(--text)}
-.hc--yr{font-size:12px;font-weight:500}
-.hc--na{background:transparent}
+.hc{display:flex;align-items:center;justify-content:center;height:46px;border-radius:8px;font-size:12px;color:var(--text);border:0;font-family:var(--font-mono);padding:0;cursor:pointer;transition:transform 160ms var(--ease-out),box-shadow 160ms var(--ease-out);position:relative}
+.hc--yr{font-weight:500;border-radius:8px}
+.hc--na{background:transparent;cursor:default}
+.hc.sel{transform:scale(1.12);box-shadow:0 0 0 2px var(--text);z-index:2}
+.hc:active{transform:scale(1.04)}
+.hc{opacity:0}
+.hc.in{opacity:1;animation:cellin 360ms var(--ease-out) backwards}
 @keyframes cellin{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
-@supports (animation-timeline:view()){
-  .hc{animation:cellin linear both;animation-timeline:view();animation-range:entry calc(5% + var(--d)*.5%) cover calc(25% + var(--d)*.5%)}
-}
+.heat-stats{display:flex;flex-wrap:wrap;gap:20px 56px;margin-top:32px;border-top:1px solid var(--line);padding-top:24px}
+.heat-stats div{display:grid;gap:2px}
+.heat-stats span{font-size:13px;color:var(--text-3)}
+.heat-stats b{font-size:24px;font-weight:500}
+.heat-stats em{font-style:normal;font-size:13px;color:var(--text-2)}
+.heat-stats .pos{color:var(--accent)}.heat-stats .neg{color:var(--negative)}
 
 /* Tesis: la fila se desplaza a la derecha al pasar el cursor */
 .tesis{margin-top:40px;border-bottom:1px solid var(--line)}
@@ -179,7 +195,7 @@ a{color:inherit;text-decoration:none}
   html{scroll-behavior:auto}
   .rise{animation:none;opacity:1;transform:none}
   .wipe{animation:none!important;clip-path:none!important;transition:none}
-  .hc{animation:none!important}
+  .hc{animation:none!important;opacity:1}
   .panel{animation:none}
   .tes,.tabs__fill{transition:none}
   .go .sl,.go .lb{animation:none}
