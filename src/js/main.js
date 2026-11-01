@@ -65,8 +65,13 @@
 
   /* Pestañas de la TIR neta: el relleno se desliza con clip-path */
   function renderTir(D) {
-    var P = D.tir_periodos, keys = Object.keys(P), cur = keys.length - 1;
-    var lab = function (k) { return /año en curso/.test(k) ? D.meta.corte.slice(0, 4) : (k === 'Desde el inicio' ? 'Desde ' + D.meta.inicio.slice(0, 4) : k); };
+    var base = D.tir_periodos, ks = Object.keys(base), P = {}, order = [];
+    var prev = D.annual.filter(function (a) { return a.year === +D.meta.corte.slice(0, 4) - 1; })[0];
+    order.push(ks[0]); P[ks[0]] = base[ks[0]];
+    if (prev) { order.push('y' + prev.year); P['y' + prev.year] = { periodo: prev.tir, anualizada: prev.tir }; }
+    ks.slice(1).forEach(function (k) { order.push(k); P[k] = base[k]; });
+    var keys = order, cur = keys.length - 1;
+    var lab = function (k) { return /^y\d{4}$/.test(k) ? k.slice(1) : /año en curso/.test(k) ? D.meta.corte.slice(0, 4) : (k === 'Desde el inicio' ? 'Desde ' + D.meta.inicio.slice(0, 4) : k); };
     var box = document.getElementById('tabs');
     var wrap = document.createElement('div'); wrap.className = 'tabs-wrap';
     box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
@@ -88,11 +93,12 @@
       var p = P[keys[i]];
       document.getElementById('tir-periodo').textContent = pct(p.periodo, true);
       var an = /^(3 años|Desde el inicio)$/.test(keys[i]);
+      var isYear = /^y\d{4}$/.test(keys[i]);
       document.getElementById('tir-anual').parentNode.hidden = !an;
       document.getElementById('tir-anual').textContent = an ? pct(p.anualizada, true) : '';
       document.getElementById('tir-nota').textContent = /año en curso/.test(keys[i])
         ? 'Del 1 de enero al ' + fecha(D.meta.corte) + ', sin anualizar.'
-        : (keys[i] === '1 año' ? 'Últimos 12 meses hasta el ' + fecha(D.meta.corte) + '.' : 'Hasta el ' + fecha(D.meta.corte) + '.');
+        : (isYear ? 'Año ' + keys[i].slice(1) + ' completo.' : (keys[i] === '1 año' ? 'Últimos 12 meses hasta el ' + fecha(D.meta.corte) + '.' : 'Hasta el ' + fecha(D.meta.corte) + '.'));
     }
     pick(cur);
   }
@@ -148,7 +154,7 @@
         return {
           name: name, type: 'line', showSymbol: false, symbol: 'circle', symbolSize: 8, z: z,
           data: S.map(function (p) { return [p.d, p[key]]; }),
-          lineStyle: { color: color, width: width, type: dashed ? [6, 5] : 'solid', cap: 'round', join: 'round' },
+          lineStyle: { color: color, width: width, type: 'solid', cap: 'round', join: 'round' },
           itemStyle: { color: color, borderColor: C.bg, borderWidth: 2 },
           emphasis: { disabled: true }, animationDuration: ms, animationEasing: 'cubicOut'
         };
@@ -238,16 +244,19 @@
     });
     new ResizeObserver(function () { chart.resize(); }).observe(el);
 
-    var MES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-    var my = function (iso) { var d = iso.split('-'); return MES[+d[1] - 1] + ' ' + d[0]; };
+    var MS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    var my = function (iso) { var d = iso.split('-'); return MS[+d[1] - 1] + ' ' + d[0]; };
     var box = document.getElementById('dd-rows');
+    box.innerHTML = '<div class="ddrow ddrow--h"><div>Caída</div><div>Cae durante</div><div>Se recupera en</div><div>Profundidad</div></div>';
     D.drawdown_worst.slice(0, 5).forEach(function (w) {
       var r = document.createElement('div'); r.className = 'ddrow';
-      var rec = w.recuperacion ? 'recuperada en ' + my(w.recuperacion) : 'sin recuperar todavía';
-      r.innerHTML = '<div><span class="ddrow__t"></span><span class="ddrow__w"></span></div><div class="ddrow__d mono"></div>';
-      r.querySelector('.ddrow__t').textContent = 'Caída desde ' + my(w.inicio);
-      r.querySelector('.ddrow__w').textContent = 'mínimo en ' + my(w.valle) + ' · ' + rec;
-      r.querySelector('.ddrow__d').textContent = pct(w.caida_pct, false);
+      r.innerHTML = '<div class="ddrow__t"></div><div class="mono ddrow__n"></div><div class="mono ddrow__n"></div><div class="ddrow__d mono"></div>';
+      var c = r.children;
+      c[0].textContent = 'Desde ' + my(w.inicio);
+      c[1].textContent = w.dias_a_valle + ' días';
+      c[2].textContent = w.recuperacion ? w.dias_recuperacion + ' días' : 'sin recuperar';
+      if (!w.recuperacion) c[2].className += ' ddrow__open';
+      c[3].textContent = pct(w.caida_pct, false);
       box.appendChild(r);
     });
   }
@@ -339,25 +348,58 @@
     new ResizeObserver(function () { var n = el.clientWidth < 560; if (n !== lastNarrow) { lastNarrow = n; draw(); } }).observe(el);
   }
 
-  /* Mapa de calor mensual (TWR): escala divergente, gris en 0 % */
+  /* Mapa de calor mensual (TWR): interactivo, escala divergente, gris en 0 % */
   function renderHeat(D) {
-    var box = document.getElementById('heat');
-    var M = ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+    var box = document.getElementById('heat'), read = document.getElementById('heat-read');
+    var MS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    var MF = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
     var bg = function (v) {
       if (v === null || v === undefined) return null;
       var k = Math.min(1, Math.abs(v) / 30), base = v >= 0 ? C.cartera : C.neg;
-      return 'color-mix(in srgb,' + base + ' ' + Math.round(12 + k * 68) + '%,' + C.surface2 + ')';
+      return 'color-mix(in srgb,' + base + ' ' + Math.round(14 + k * 66) + '%,' + C.surface2 + ')';
     };
-    var head = '<div class="heat__row heat__head"><div></div>' + M.map(function (m) { return '<div class="mono">' + m + '</div>'; }).join('') + '<div class="mono">Año</div></div>';
-    var rows = D.monthly_twr.map(function (r, ri) {
-      var cells = r.months.map(function (v, mi) {
-        var b = bg(v), d = ri * 6 + mi;
-        return b === null ? '<div class="hc hc--na"></div>' : '<div class="hc mono" style="--d:' + d + ';background:' + b + '" title="' + (v > 0 ? '+' : '') + n1.format(v).replace('-', '−') + ' %">' + Math.round(v) + '</div>';
-      }).join('');
-      var yr = r.annual === null ? '' : '<div class="hc hc--yr mono" style="--d:' + (ri * 6 + 12) + ';background:' + bg(r.annual) + '">' + Math.round(r.annual) + ' %</div>';
-      return '<div class="heat__row"><div class="heat__y mono">' + r.year + '</div>' + cells + (yr || '<div></div>') + '</div>';
-    }).join('');
-    box.innerHTML = head + rows;
+    var sgn = function (v) { return pct(v, true); };
+    var html = '<div class="heat__row heat__head"><div></div>' + MS.map(function (m) { return '<div class="mono">' + m + '</div>'; }).join('') + '<div class="mono">Año</div></div>';
+    D.monthly_twr.forEach(function (r, ri) {
+      html += '<div class="heat__row" data-y="' + r.year + '"><div class="heat__y mono">' + r.year + '</div>';
+      r.months.forEach(function (v, mi) {
+        html += v === null || v === undefined ? '<div class="hc hc--na"></div>'
+          : '<button type="button" class="hc mono" data-v="' + v + '" data-l="' + MF[mi] + ' ' + r.year + '" data-m="' + mi + '" style="background:' + bg(v) + '">' + Math.round(v) + '</button>';
+      });
+      html += r.annual === null || r.annual === undefined ? '<div></div>'
+        : '<button type="button" class="hc hc--yr mono" data-v="' + r.annual + '" data-l="Año ' + r.year + '" data-m="12" style="background:' + bg(r.annual) + '">' + Math.round(r.annual) + ' %</button>';
+      html += '</div>';
+    });
+    box.innerHTML = html;
+    var cells = box.querySelectorAll('button.hc');
+    function show(c) {
+      cells.forEach(function (x) { x.classList.toggle('sel', x === c); });
+      var row = c.parentNode, col = +c.getAttribute('data-m');
+      box.querySelectorAll('.heat__row').forEach(function (rw) { rw.classList.toggle('dim', rw !== row); });
+      var v = +c.getAttribute('data-v');
+      read.innerHTML = '<span class="heat__rl"></span><span class="heat__rv mono"></span>';
+      read.firstChild.textContent = c.getAttribute('data-l') + (c.classList.contains('hc--yr') ? ' completo' : '');
+      read.lastChild.textContent = sgn(v); read.lastChild.className = 'heat__rv mono ' + (v < 0 ? 'neg' : 'pos');
+    }
+    function clear() { cells.forEach(function (x) { x.classList.remove('sel'); }); box.querySelectorAll('.heat__row').forEach(function (rw) { rw.classList.remove('dim'); }); read.innerHTML = '<span class="heat__rl">Pasa el cursor o toca un mes</span>'; }
+    cells.forEach(function (c) {
+      c.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') show(c); });
+      c.addEventListener('focus', function () { show(c); });
+      c.addEventListener('click', function () { show(c); });
+    });
+    box.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') clear(); });
+    // Mejor y peor mes, y meses en positivo
+    var all = []; D.monthly_twr.forEach(function (r) { r.months.forEach(function (v, i) { if (v !== null && v !== undefined) all.push({ v: v, l: MF[i] + ' ' + r.year }); }); });
+    all.sort(function (a, b) { return a.v - b.v; });
+    var pos = all.filter(function (x) { return x.v > 0; }).length;
+    document.getElementById('heat-stats').innerHTML =
+      '<div><span>Mejor mes</span><b class="mono pos">' + sgn(all[all.length - 1].v) + '</b><em>' + all[all.length - 1].l + '</em></div>' +
+      '<div><span>Peor mes</span><b class="mono neg">' + sgn(all[0].v) + '</b><em>' + all[0].l + '</em></div>' +
+      '<div><span>Meses en positivo</span><b class="mono">' + n0.format(pos / all.length * 100) + ' %</b><em>' + pos + ' de ' + all.length + '</em></div>';
+    clear();
+    if (!reduced) onVisible(box, function () {
+      var i = 0; cells.forEach(function (c) { c.style.animationDelay = (i++ * 12) + 'ms'; c.classList.add('in'); });
+    }); else cells.forEach(function (c) { c.classList.add('in'); });
   }
 
   /* Tesis: lista de lectura; al pulsar, el panel se abre desde la fila */
