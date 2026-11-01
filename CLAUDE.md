@@ -30,7 +30,7 @@ Web personal de inversión: track record, métricas, tesis y watchlist. Reposito
 - En la web NO se explica la custodia ni los costes del broker (decisión de Izan, 01/11/2026: demasiada información). La TIR se etiqueta "TIR neta" y el TWR "TWR"; la metodología se queda en pocas líneas.
 
 ## Diseño
-- Fintech oscuro, sobrio y analítico. Referencias: Pigma y "Amplify strategic cashflow". Las muestras NO son definitivas: se cambiarán cosas, así que todo color, fuente y medida vive en `src/styles/tokens.css`.
+- Base de diseño: muestra D de Izan (Main4) con los gráficos de la muestra «graficos»; tipografía Geist / Geist Mono. Fintech oscuro, sobrio y analítico. Referencias: Pigma y "Amplify strategic cashflow". Las muestras NO son definitivas: se cambiarán cosas, así que todo color, fuente y medida vive en `src/styles/tokens.css`.
 - Skills (en `.claude/skills/`): impeccable, emil-design-eng, design-taste-frontend, dataviz. Reparto: Inicio y Sobre mí → taste + impeccable (Persuade); Cartera/métricas → impeccable (Operate); tesis → impeccable (Read); emil en todo (animar poco y con propósito).
 - Gráficos: solo ECharts. Nunca doble eje Y; color fijo por serie o empresa (no por ranking); benchmark en línea discontinua; `showSymbol: false` en series diarias; heatmap mensual con escala divergente y gris en 0 %.
 - Animaciones obligatorias: (1) línea de 1.000 € que se dibuja con las cifras contando; (2) cursor con panel de valores sobre ese gráfico; (3) gráfico de caídas que se dibuja al hacer scroll. Respetar `prefers-reduced-motion`.
@@ -38,7 +38,7 @@ Web personal de inversión: track record, métricas, tesis y watchlist. Reposito
 - Contacto: tarjetas de red (icono, nombre, usuario, frase, flecha) para LinkedIn y Substack, interactivas: al tocar, el borde cambia de color y se mueve. Diseño propio con el acento de la web, no una copia de otra web.
 
 ## Páginas
-Inicio, Cartera, Tesis (solo lectura), Watchlist (~46 empresas; sin inventar precios ni valoraciones), Sobre mí, Contacto, Disclaimer, Privacidad. Reseñas de libros: solo cuando haya al menos tres.
+Inicio, Cartera, Tesis (solo lectura), Watchlist (~46 empresas; sin inventar precios ni valoraciones), Sobre mí, Contacto, Disclaimer, Privacidad. Libros: la sección existe con un texto de «primera reseña en preparación» (decisión de Izan, 01/11/2026); las reseñas individuales solo se listan cuando haya al menos tres.
 
 ## Disclaimer (contenido mínimo)
 No es asesoramiento financiero; opiniones personales; rentabilidades pasadas no garantizan resultados futuros; las posiciones pueden cambiar; los datos pueden tener retraso.

@@ -28,12 +28,12 @@
   --emp-amazon: #FF9900;
   --emp-alphabet: #EA4335;
   --emp-microsoft: #2EA043;
-  --emp-digi: #0B2A6F;
+  --emp-digi: #2A4FC4;
   --emp-efectivo: #4B5563;
 
-  /* Tipografía (provisional, hasta elegir) */
-  --font-sans: 'Manrope', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* Tipografía (la de la muestra D; se puede cambiar aquí) */
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   /* Espaciado (base 4 px) y bordes */
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
