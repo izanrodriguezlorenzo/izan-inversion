@@ -34,27 +34,26 @@
       <h1>Mi cartera, medida frente al S&amp;P&nbsp;500 y el Nasdaq&nbsp;100.</h1>
       <p class="lead">Invierto desde 2022. La cartera se mide con rigor desde 2025, cuando el capital es mayor. Publico solo porcentajes y explico cómo los calculo.</p>
     </div>
-    <dl class="kpis" aria-label="Mi rentabilidad real (TIR)">
+    <dl class="kpis" aria-label="Mi rentabilidad real (TIR neta)">
       <div class="kpi" data-kpi="desde_inicio_anualizada">
-        <dt>TIR desde el inicio, anualizada</dt>
+        <dt>TIR neta desde el inicio, anualizada</dt>
         <dd class="kpi__main" data-v></dd>
       </div>
       <div class="kpi" data-kpi="anio_en_curso">
-        <dt>TIR del año en curso, sin anualizar</dt>
+        <dt>TIR neta del año en curso, sin anualizar</dt>
         <dd class="kpi__main" data-v></dd>
       </div>
       <div class="kpi" data-kpi="ultimos_12_meses">
-        <dt>TIR de los últimos 12 meses</dt>
+        <dt>TIR neta de los últimos 12 meses</dt>
         <dd class="kpi__main" data-v></dd>
       </div>
-      <p class="kpi__note">Tasa interna de retorno: lo que ha rendido mi dinero teniendo en cuenta cuándo lo he aportado. Neta de comisiones de operación y de custodia.</p>
     </dl>
   </section>
 
   <section class="block wrap" id="rentabilidad">
     <header class="block__head">
       <h2>1.000 € el 8 de febrero de 2022</h2>
-      <p>Lo que valdrían hoy 1.000 € invertidos en la cartera, en el S&amp;P 500 y en el Nasdaq 100 desde el día de mi primera compra. La línea de la cartera es el TWR acumulado (no se ve alterado por cuándo entra el dinero), sin comisiones de custodia, para compararla con los índices en igualdad de condiciones. Los índices son Total Return en euros, sin costes.</p>
+      <p>Lo que valdrían hoy 1.000 € invertidos en la cartera, en el S&amp;P 500 y en el Nasdaq 100 desde el día de mi primera compra. La cartera se mide con TWR y los índices son Total Return en euros.</p>
     </header>
     <ul class="legend" id="legend-line">
       <li class="legend__item" data-s="p"><span class="dot dot--cartera"></span><span class="legend__name">Cartera</span><strong class="legend__val" data-count>—</strong><span class="legend__pct" data-pct></span></li>
@@ -71,13 +70,13 @@
         <tbody></tbody>
       </table>
     </div>
-    <p class="note">TWR de la cartera sin comisiones de custodia frente a los índices Total Return en euros, sin costes.</p>
+    <p class="note">TWR de la cartera frente a los índices Total Return en euros.</p>
 
     <details class="table-view">
       <summary>Ver rentabilidad por año en tabla</summary>
       <div class="table-scroll">
         <table id="tabla-anual">
-          <thead><tr><th>Año</th><th>TIR cartera (neta de custodia)</th><th>TWR cartera (sin custodia)</th><th>S&amp;P 500</th><th>Nasdaq 100</th></tr></thead>
+          <thead><tr><th>Año</th><th>TIR neta cartera</th><th>TWR cartera</th><th>S&amp;P 500</th><th>Nasdaq 100</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -88,7 +87,7 @@
   <section class="block wrap" id="caidas">
     <header class="block__head">
       <h2>Cuánto ha caído la cartera desde su máximo</h2>
-      <p>Distancia en porcentaje entre cada semana y el máximo anterior de la cartera. La rentabilidad de la cartera en este gráfico es el TWR, que no se ve alterado por cuándo entra el dinero.</p>
+      <p>Distancia en porcentaje entre cada semana y el máximo anterior de la cartera (TWR).</p>
     </header>
     <dl class="dd-stats" id="dd-stats"></dl>
     <div class="chart chart--dd" id="chart-dd" role="img" aria-label="Caída de la cartera respecto a su máximo anterior, por semanas"></div>
@@ -97,12 +96,10 @@
   <section class="block wrap" id="metodologia">
     <header class="block__head"><h2>Cómo se calcula</h2></header>
     <ul class="method">
-      <li><b>TIR (XIRR)</b> es mi rentabilidad real: mide lo que ha rendido mi dinero teniendo en cuenta cuándo lo aporto. Va neta de comisiones de operación y de custodia.</li>
-      <li><b>TWR</b> mide la estrategia sin el efecto del momento de las aportaciones. Es lo que comparo con el S&amp;P 500 y el Nasdaq 100, y también lo que uso para el riesgo y las caídas. Va sin comisiones de custodia, porque son un coste del broker y no de mi forma de elegir empresas; los índices van sin costes. Las comisiones de operación sí están incluidas.</li>
-      <li>Los índices son S&amp;P 500 y Nasdaq 100 en versión Total Return (con dividendos) y en euros.</li>
-      <li>Los periodos de menos de un año no se anualizan; el año en curso se muestra tal como va.</li>
-      <li>Los índices se miden desde el 1 de enero de cada año. La única excepción es el gráfico de 1.000 €, que parte del día de mi primera compra.</li>
-      <li>El gráfico de 1.000 € usa el TWR porque la TIR es una cifra de periodo y no puede dibujarse día a día; por eso la línea de la cartera y la TIR de arriba no coinciden. La web muestra solo porcentajes. No publico patrimonio, número de acciones ni importes por posición.</li>
+      <li><b>TIR neta</b> es mi rentabilidad real: tiene en cuenta cuándo aporto el dinero y los costes.</li>
+      <li><b>TWR</b> mide la estrategia sin el efecto del momento de las aportaciones. Es lo que comparo con el S&amp;P 500 y el Nasdaq 100.</li>
+      <li>Los índices son Total Return (con dividendos) y en euros. Se miden desde el 1 de enero de cada año; el gráfico de 1.000 € parte del día de mi primera compra.</li>
+      <li>Los periodos de menos de un año no se anualizan. La web muestra solo porcentajes.</li>
     </ul>
   </section>
 </main>

@@ -27,6 +27,8 @@ Web personal de inversión: track record, métricas, tesis y watchlist. Reposito
 - Índices medidos desde el 1 de enero de cada periodo. Única excepción: el gráfico grande, que mide cartera e índices desde la primera compra.
 - S&P 500 y Nasdaq 100 al mismo nivel, sin benchmark "principal".
 
+- En la web NO se explica la custodia ni los costes del broker (decisión de Izan, 01/11/2026: demasiada información). La TIR se etiqueta "TIR neta" y el TWR "TWR"; la metodología se queda en pocas líneas.
+
 ## Diseño
 - Fintech oscuro, sobrio y analítico. Referencias: Pigma y "Amplify strategic cashflow". Las muestras NO son definitivas: se cambiarán cosas, así que todo color, fuente y medida vive en `src/styles/tokens.css`.
 - Skills (en `.claude/skills/`): impeccable, emil-design-eng, design-taste-frontend, dataviz. Reparto: Inicio y Sobre mí → taste + impeccable (Persuade); Cartera/métricas → impeccable (Operate); tesis → impeccable (Read); emil en todo (animar poco y con propósito).
