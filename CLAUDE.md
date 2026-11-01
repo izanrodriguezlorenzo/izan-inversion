@@ -21,8 +21,8 @@ Web personal de inversión: track record, métricas, tesis y watchlist. Reposito
 - Actualización mensual (se puede pasar a quincenal): se sustituye el JSON y se vuelve a pasar la comprobación de privacidad.
 
 ## Metodología (debe aparecer en la web)
-- Métrica principal: TIR (XIRR). TWR como complemento etiquetado; también para riesgo y comparación con índices.
-- Cartera neta de comisiones de operación y de custodia. Índices S&P 500 y Nasdaq 100, versión Total Return en EUR, sin costes.
+- Métrica principal: TIR (XIRR), neta de comisiones de operación y de custodia ("mi rentabilidad real"). TWR sin custodia para riesgo, caídas y comparación con índices (estrategia frente a índice). La TIR nunca se pone al lado de los índices.
+- TIR neta de operación y custodia; TWR sin custodia pero con comisiones de operación. Índices S&P 500 y Nasdaq 100, versión Total Return en EUR, sin costes.
 - Periodos de menos de un año, sin anualizar. TIR del año en curso sin anualizar.
 - Índices medidos desde el 1 de enero de cada periodo. Única excepción: el gráfico grande, que mide cartera e índices desde la primera compra.
 - S&P 500 y Nasdaq 100 al mismo nivel, sin benchmark "principal".

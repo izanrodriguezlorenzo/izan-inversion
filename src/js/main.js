@@ -56,10 +56,17 @@
 
   function renderKpis(D) {
     document.querySelectorAll('[data-kpi]').forEach(function (box) {
-      var t = D.tiles[box.getAttribute('data-kpi')];
-      box.querySelectorAll('[data-v]').forEach(function (el) {
-        el.textContent = pct(t[el.getAttribute('data-v')], true);
+      box.querySelector('[data-v]').textContent = pct(D.tiles.tir[box.getAttribute('data-kpi')], true);
+    });
+    var tb = document.querySelector('#tabla-vs tbody');
+    [['Año en curso, sin anualizar', 'anio_en_curso'], ['Últimos 12 meses', 'ultimos_12_meses'], ['Desde la primera compra', 'desde_primera_compra']].forEach(function (r) {
+      var t = D.tiles.twr_vs_indices[r[1]], tr = document.createElement('tr');
+      [r[0], t.cartera_twr, t.sp500, t.nasdaq100].forEach(function (v, i) {
+        var td = document.createElement('td');
+        if (i === 0) td.textContent = v; else { td.textContent = pct(v, true); if (v < 0) td.className = 'neg'; }
+        tr.appendChild(td);
       });
+      tb.appendChild(tr);
     });
   }
 
@@ -166,7 +173,7 @@
       ['Mayor caída', pct(st.max_drawdown_pct, false), true],
       ['Del máximo al mínimo', fecha(w.inicio, true) + ' → ' + fecha(w.valle, true), false],
       ['Recuperación del máximo', fecha(w.recuperacion, true) + ' (' + w.dias_recuperacion + ' días)', false],
-      ['Caída actual', pct(st.drawdown_actual_pct, false), false]
+      ['Caída actual', pct(st.drawdown_actual_pct, false), st.drawdown_actual_pct < 0]
     ].forEach(function (r) {
       var d = document.createElement('div');
       d.innerHTML = '<dt></dt><dd></dd>';
