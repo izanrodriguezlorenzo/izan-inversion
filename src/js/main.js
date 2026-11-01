@@ -233,6 +233,7 @@
       var keep = yearMins.slice().sort(function (a, b) { return a.value - b.value; }).slice(0, 2);
       yearMins.forEach(function (m) { if (keep.indexOf(m) < 0) m.label = { show: false }; });
     }
+    var isYearMin = function (d) { return yearMins.some(function (m) { return m.coord[0] === String(d).slice(0, 10); }); };
     var chart = echarts.init(el, null, { renderer: 'canvas' });
     chart.setOption({
       animation: false, textStyle: { fontFamily: C.sans },
@@ -243,7 +244,8 @@
         trigger: 'axis', confine: true, transitionDuration: 0.12, backgroundColor: C.surface, borderColor: C.lineStrong, borderWidth: 1, padding: [10, 12], extraCssText: 'box-shadow:none;border-radius:10px;',
         formatter: function (ps) {
           var p = ps[0];
-          return '<div class="tip"><div class="tip__date">' + fecha(String(p.value[0]).slice(0, 10)) + '</div><div class="tip__row"><span class="tip__name">Por debajo del máximo</span><span class="tip__val">' + pct(p.value[1], false) + '</span></div></div>';
+          return '<div class="tip"><div class="tip__date">' + fecha(String(p.value[0]).slice(0, 10)) + '</div><div class="tip__row"><span class="tip__name">Por debajo del máximo</span><span class="tip__val">' + pct(p.value[1], false) + '</span></div>' +
+            (isYearMin(p.value[0]) ? '<div class="tip__diff"><b>Máxima caída de ' + String(p.value[0]).slice(0, 4) + '</b></div>' : '') + '</div>';
         }
       },
       series: [{
