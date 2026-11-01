@@ -220,6 +220,19 @@
   /* Caídas: línea roja que se descubre hacia la derecha al hacer scroll */
   function renderDrawdown(D) {
     var el = document.getElementById('chart-dd');
+    // Un punto por año: la mayor caída de ese año
+    var byYear = {};
+    D.drawdown_series.forEach(function (p) { var y = p.d.slice(0, 4); if (!byYear[y] || p.dd < byYear[y].dd) byYear[y] = p; });
+    var t0 = new Date(D.drawdown_series[0].d).getTime(), t1 = new Date(D.drawdown_series[D.drawdown_series.length - 1].d).getTime();
+    var yearMins = Object.keys(byYear).map(function (y) {
+      var p = byYear[y], late = (new Date(p.d).getTime() - t0) / (t1 - t0) > 0.82;
+      return { coord: [p.d, p.dd], value: p.dd, label: { position: late ? 'left' : 'right', offset: [late ? -4 : 4, 0] } };
+    });
+    // En pantallas estrechas solo se rotulan las dos mayores caídas; el resto son puntos con el valor en el panel
+    if (el.clientWidth < 600) {
+      var keep = yearMins.slice().sort(function (a, b) { return a.value - b.value; }).slice(0, 2);
+      yearMins.forEach(function (m) { if (keep.indexOf(m) < 0) m.label = { show: false }; });
+    }
     var chart = echarts.init(el, null, { renderer: 'canvas' });
     chart.setOption({
       animation: false, textStyle: { fontFamily: C.sans },
@@ -238,7 +251,7 @@
         data: D.drawdown_series.map(function (p) { return [p.d, p.dd]; }),
         lineStyle: { color: C.neg, width: 1.75 }, itemStyle: { color: C.neg },
         areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(244,80,110,0.04)' }, { offset: 1, color: 'rgba(244,80,110,0.32)' }]) },
-        markPoint: { symbol: 'circle', symbolSize: 8, itemStyle: { color: C.neg, borderColor: C.bg, borderWidth: 2 }, label: { show: true, position: 'right', color: C.text2, fontFamily: C.mono, fontSize: 11, offset: [4, 0], formatter: function (p) { return pct(p.value, false); } }, data: [{ type: 'min' }] },
+        markPoint: { symbol: 'circle', symbolSize: 8, itemStyle: { color: C.neg, borderColor: C.bg, borderWidth: 2 }, label: { show: true, position: 'right', color: C.text2, fontFamily: C.mono, fontSize: 11, offset: [4, 0], formatter: function (p) { return pct(p.value, false); } }, data: yearMins },
         emphasis: { disabled: true }
       }]
     });
